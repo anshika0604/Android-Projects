@@ -36,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("DbData",  "Ids are : "+anshika.getId() +  aastha.getId() + rita.getId());
 
+        rita.setId(10);
+        rita.setName("Changed Rita");
+        rita.setPhone("000000000");
+        int affectedRows = db.updateContact(rita);
+
+        Log.d("DbData", "No of affected rows: "+ affectedRows);
         //Get all contact
         List<Contact> allContacts = db.getAllContacts();
         for(Contact contact: allContacts) {
