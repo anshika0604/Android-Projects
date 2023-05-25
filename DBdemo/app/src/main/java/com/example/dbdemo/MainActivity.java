@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         int affectedRows = db.updateContact(rita);
 
         Log.d("DbData", "No of affected rows: "+ affectedRows);
+        db.deleteContact(1);
+        db.deleteContact(10);
+        db.deleteContact(5);
         //Get all contact
         List<Contact> allContacts = db.getAllContacts();
         for(Contact contact: allContacts) {

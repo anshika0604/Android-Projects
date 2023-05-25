@@ -75,4 +75,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return db.update(Params.TABLE_NAME, values, Params.KEY_ID + "=?" ,
                 new String[]{String.valueOf(contact.getId())});
     }
+
+    public void deleteContact(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Params.TABLE_NAME, Params.KEY_ID + "=?",
+                new String[]{String.valueOf(id)});
+        db.close();
+    }
+
 }
