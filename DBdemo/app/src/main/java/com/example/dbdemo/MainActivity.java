@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.dbdemo.data.MyDBHandler;
 import com.example.dbdemo.model.Contact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,38 +23,47 @@ public class MainActivity extends AppCompatActivity {
 
         MyDBHandler db = new MyDBHandler(MainActivity.this);
 
-        Contact anshika = new Contact();
-        anshika.setPhone("76682913468");
-        anshika.setName("Anshika");
-        db.addContact(anshika);
-
-        Contact aastha = new Contact();
-        aastha.setPhone("766867618");
-        aastha.setName("Aastha");
-        db.addContact(aastha);
-
-        Contact rita = new Contact();
-        rita.setPhone("97238234788");
-        rita.setName("Rita");
-        db.addContact(rita);
-
-        Log.d("DbData",  "Ids are : "+anshika.getId() +  aastha.getId() + rita.getId());
-
-        rita.setId(10);
-        rita.setName("Changed Rita");
-        rita.setPhone("000000000");
-        int affectedRows = db.updateContact(rita);
-
-        Log.d("DbData", "No of affected rows: "+ affectedRows);
-        db.deleteContact(1);
-        db.deleteContact(10);
-        db.deleteContact(5);
+//        Contact anshika = new Contact();
+//        anshika.setPhone("76682913468");
+//        anshika.setName("Anshika");
+//        db.addContact(anshika);
+//
+//        Contact aastha = new Contact();
+//        aastha.setPhone("766867618");
+//        aastha.setName("Aastha");
+//        db.addContact(aastha);
+//
+//        Contact rita = new Contact();
+//        rita.setPhone("97238234788");
+//        rita.setName("Rita");
+//        db.addContact(rita);
+//
+//        Log.d("DbData",  "Ids are : "+anshika.getId() +  aastha.getId() + rita.getId());
+//
+//        rita.setId(10);
+//        rita.setName("Changed Rita");
+//        rita.setPhone("000000000");
+//        int affectedRows = db.updateContact(rita);
+//
+//        Log.d("DbData", "No of affected rows: "+ affectedRows);
+//        db.deleteContact(1);
+//        db.deleteContact(10);
+//        db.deleteContact(5);
         //Get all contact
+
+        ArrayList<String> contacts = new ArrayList<>();
+        listView = findViewById(R.id.ListView);
         List<Contact> allContacts = db.getAllContacts();
         for(Contact contact: allContacts) {
             Log.d("DbData", "Id: " + contact.getId() + "\n" +
                     "Name: " + contact.getName() + "\n" +
                     "Phone Number: " + contact.getPhone() + "\n");
+            contacts.add(contact.getName() + " (" + contact.getPhone() + " )");
         }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contacts);
+        listView.setAdapter(arrayAdapter);
+        //Log.d("DbData", "You have "+ db.getCount() + " Contacts in your database");
+
     }
 }
