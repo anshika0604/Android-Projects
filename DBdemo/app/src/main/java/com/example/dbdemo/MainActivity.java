@@ -1,12 +1,15 @@
 package com.example.dbdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.dbdemo.adapter.RecyclerViewAdapter;
 import com.example.dbdemo.data.MyDBHandler;
 import com.example.dbdemo.model.Contact;
 
@@ -15,18 +18,29 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
+    //ListView listView;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private ArrayList<Contact> contactArrayList;
+    private ArrayAdapter<String> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Recycler View Initialisation
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
         MyDBHandler db = new MyDBHandler(MainActivity.this);
 
-//        Contact anshika = new Contact();
-//        anshika.setPhone("76682913468");
-//        anshika.setName("Anshika");
-//        db.addContact(anshika);
+        Contact anshika = new Contact();
+        anshika.setPhone("76682913468");
+        anshika.setName("Anshika");
+        db.addContact(anshika);
 //
 //        Contact aastha = new Contact();
 //        aastha.setPhone("766867618");
@@ -51,18 +65,22 @@ public class MainActivity extends AppCompatActivity {
 //        db.deleteContact(5);
         //Get all contact
 
-        ArrayList<String> contacts = new ArrayList<>();
-        listView = findViewById(R.id.ListView);
-        List<Contact> allContacts = db.getAllContacts();
-        for(Contact contact: allContacts) {
+        contactArrayList = new ArrayList<>();
+        //listView = findViewById(R.id.ListView);
+        List<Contact> contactList = db.getAllContacts();
+        for(Contact contact: contactList) {
             Log.d("DbData", "Id: " + contact.getId() + "\n" +
                     "Name: " + contact.getName() + "\n" +
                     "Phone Number: " + contact.getPhone() + "\n");
-            contacts.add(contact.getName() + " (" + contact.getPhone() + " )");
+            contactArrayList.add(contact);
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contacts);
-        listView.setAdapter(arrayAdapter);
+        // Using RecyclerView Adapter
+
+        recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, contactArrayList);
+        recyclerView.setAdapter(recyclerViewAdapter);
+        // ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contacts);
+        //listView.setAdapter(arrayAdapter);
         //Log.d("DbData", "You have "+ db.getCount() + " Contacts in your database");
 
     }
