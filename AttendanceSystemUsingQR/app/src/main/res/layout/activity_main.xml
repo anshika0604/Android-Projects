@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F693"
-    android:backgroundTint="#E6B1F3"
+    android:background="#1730BC"
+    android:backgroundTint="#673AB7"
     tools:context=".MainActivity">
 
     <TextView
@@ -17,10 +17,10 @@
         android:padding="75dp"
         android:shadowColor="#653636"
         android:text="@string/Text"
-        android:textColor="#150606"
+        android:textColor="#FFFFFF"
         android:textColorHighlight="#1640D6"
         android:textColorHint="#A83838"
-        android:textSize="48sp"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
