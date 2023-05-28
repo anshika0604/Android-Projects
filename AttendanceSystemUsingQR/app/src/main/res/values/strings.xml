@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Attendance System Using QR</string>
+    <string name="Text">QR Based Attendance System</string>
+    <string name="header">Attendance</string>
+    <string name="faculty">Faculty</string>
+    <string name="student">Student</string>
+    <string name="Login">Login</string>
+    <string name="Email">Enter Email Address</string>
+    <string name="password">Enter Password</string>
+</resources>
