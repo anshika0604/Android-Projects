@@ -18,7 +18,9 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
 
     }
     public void student_register(View view) {

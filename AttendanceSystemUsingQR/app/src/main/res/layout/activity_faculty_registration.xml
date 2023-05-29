@@ -32,6 +32,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
             android:text="Faculty Registration"
             android:textColor="#FFFFFF"
             android:textSize="34sp"

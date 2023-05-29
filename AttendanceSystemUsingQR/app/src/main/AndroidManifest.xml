@@ -14,7 +14,8 @@
         tools:targetApi="31">
         <activity
             android:name=".Faculty_loginpage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Dashboard"/>
         <activity
             android:name=".QR_Scanner"
             android:exported="false" />
@@ -23,15 +24,16 @@
             android:exported="false" />
         <activity
             android:name=".Student_registration"
-            android:exported="false">
-
-         </activity>
+            android:exported="false"
+            android:parentActivityName=".LoginPage"/>
         <activity
             android:name=".Faculty_registration"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Faculty_loginpage"/>
         <activity
             android:name=".LoginPage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Dashboard"/>
         <activity
             android:name=".Dashboard"
             android:exported="false" />
