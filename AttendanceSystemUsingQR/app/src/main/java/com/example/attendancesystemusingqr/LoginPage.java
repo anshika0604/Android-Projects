@@ -1,6 +1,7 @@
 package com.example.attendancesystemusingqr;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -8,12 +9,16 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+
 public class LoginPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
 
     }
     public void student_register(View view) {
