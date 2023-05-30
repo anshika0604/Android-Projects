@@ -25,4 +25,8 @@ public class Faculty_loginpage extends AppCompatActivity {
         Intent intent = new Intent(Faculty_loginpage.this, Faculty_registration.class);
         startActivity(intent);
     }
+    public void login_faculty(View view) {
+        Intent intent = new Intent(Faculty_loginpage.this, Faculty_attendance_page.class);
+        startActivity(intent);
+    }
 }

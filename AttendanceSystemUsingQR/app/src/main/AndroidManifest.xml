@@ -13,27 +13,33 @@
         android:theme="@style/Theme.AttendanceSystemUsingQR"
         tools:targetApi="31">
         <activity
+            android:name=".Faculty_attendance_page"
+            android:exported="false"
+            android:parentActivityName=".Faculty_loginpage" />
+        <activity
             android:name=".Faculty_loginpage"
             android:exported="false"
-            android:parentActivityName=".Dashboard"/>
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".QR_Scanner"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".LoginPage" />
         <activity
             android:name=".QR_generator"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Faculty_loginpage" />
         <activity
             android:name=".Student_registration"
             android:exported="false"
-            android:parentActivityName=".LoginPage"/>
+            android:parentActivityName=".LoginPage" />
         <activity
             android:name=".Faculty_registration"
             android:exported="false"
-            android:parentActivityName=".Faculty_loginpage"/>
+            android:parentActivityName=".Faculty_loginpage" />
         <activity
             android:name=".LoginPage"
             android:exported="false"
-            android:parentActivityName=".Dashboard"/>
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".Dashboard"
             android:exported="false" />

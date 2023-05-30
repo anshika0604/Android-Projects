@@ -169,6 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
+            android:onClick="faculty_login"
             android:text="Register"
             android:textSize="20sp" />
     </LinearLayout>

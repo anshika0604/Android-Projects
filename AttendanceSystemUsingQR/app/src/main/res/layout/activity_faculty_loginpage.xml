@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="50dp"
+            android:onClick="login_faculty"
             android:text="@string/Login" />
 
         <TextView

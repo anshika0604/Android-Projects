@@ -27,5 +27,9 @@ public class LoginPage extends AppCompatActivity {
         Intent intent = new Intent(LoginPage.this, Student_registration.class);
         startActivity(intent);
     }
+    public void attendance(View view) {
+        Intent intent = new Intent(LoginPage.this, QR_Scanner.class);
+        startActivity(intent);
+    }
 
 }
