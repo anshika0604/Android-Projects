@@ -74,7 +74,7 @@
                 android:textSize="24sp" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/course_spin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="95dp"
@@ -99,7 +99,7 @@
                 android:textSize="24sp" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/sem_spin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
@@ -125,7 +125,7 @@
                 android:textSize="24sp" />
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/sec_spin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="90dp"
@@ -150,7 +150,7 @@
                 android:textSize="24sp" />
 
             <Spinner
-                android:id="@+id/spinner4"
+                android:id="@+id/sub_spin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="90dp"
