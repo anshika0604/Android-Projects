@@ -175,7 +175,7 @@
                 android:textSize="28sp" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/setDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
@@ -183,6 +183,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_weight="1"
                 android:backgroundTint="#3A3636"
+                android:onClick="set_date"
                 android:text="Select Date"
                 android:textColorHighlight="#D16666"
                 android:textColorLink="#A84848"
@@ -208,7 +209,7 @@
                 android:textSize="28sp" />
 
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/setTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
@@ -216,6 +217,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_weight="1"
                 android:backgroundTint="#3A3636"
+                android:onClick="set_time"
                 android:text="Select Time"
                 android:textColorHighlight="#D16666"
                 android:textColorLink="#A84848"
