@@ -10,14 +10,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 
 public class Faculty_attendance_page extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    Button btnSignOut;
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     Integer[] semester = { 1,2,3,4,5,6 };
     String[] section = { "A", "B", "C"};
@@ -57,6 +61,18 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
         ArrayAdapter ad3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subject);
         ad3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin4.setAdapter(ad3);
+
+        // Log Out
+        btnSignOut = findViewById(R.id.signOut);
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), Faculty_loginpage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     public void generate_qr(View view) {
         Intent intent = new Intent(Faculty_attendance_page.this, QR_generator.class);

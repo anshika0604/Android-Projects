@@ -65,9 +65,9 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/editTextText5"
+            android:id="@+id/nameFaculty1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -84,9 +84,9 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress2"
+            android:id="@+id/emailFaculty1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -103,9 +103,9 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/editTextTextPassword2"
+            android:id="@+id/passFaculty1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -164,7 +164,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/Register"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -1,23 +1,91 @@
 package com.example.attendancesystemusingqr;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Faculty_registration extends AppCompatActivity {
 
+    Button btnRegister;
+    EditText emailText, passText;
+    FirebaseAuth mAuth;
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
 
+    // Check if User is already Logged in
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+            startActivity(intent);
+            finish();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_registration);
+
+        emailText = findViewById(R.id.emailFaculty1);
+        passText = findViewById(R.id.passFaculty1);
+        btnRegister = findViewById(R.id.Register);
+        mAuth = FirebaseAuth.getInstance();
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email, password;
+                email = String.valueOf(emailText.getText());
+                password = String.valueOf(passText.getText());
+
+                if(TextUtils.isEmpty(email)) {
+                    Toast.makeText(Faculty_registration.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(TextUtils.isEmpty(password)) {
+                    Toast.makeText(Faculty_registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(Faculty_registration.this, "Faculty Registration Successful", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(Faculty_registration.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+
+            }
+        });
 
         // Toolbar Styling and Back Button
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -42,4 +110,6 @@ public class Faculty_registration extends AppCompatActivity {
         Intent intent = new Intent(Faculty_registration.this, Faculty_attendance_page.class);
         startActivity(intent);
     }
+
+
 }

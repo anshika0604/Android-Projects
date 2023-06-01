@@ -73,7 +73,7 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/emailFaculty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -94,7 +94,7 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/passFaculty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -106,7 +106,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="50dp"
@@ -122,7 +122,7 @@
             android:textSize="24sp" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/faculty_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

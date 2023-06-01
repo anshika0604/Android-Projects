@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "634630094331",
+    "project_id": "qr-based-attendance-7053b",
+    "storage_bucket": "qr-based-attendance-7053b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634630094331:android:923fbe000dc7ef179c1f5e",
+        "android_client_info": {
+          "package_name": "com.example.attendancesystemusingqr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOGO3elv6MmKmE6lQ04B1VhAUIJhUIzVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
