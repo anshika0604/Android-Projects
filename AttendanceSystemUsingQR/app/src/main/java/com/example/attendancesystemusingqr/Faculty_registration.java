@@ -48,16 +48,17 @@ public class Faculty_registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_registration);
 
-        emailText = findViewById(R.id.emailFaculty1);
-        passText = findViewById(R.id.passFaculty1);
+        // Authentication
+        emailText = findViewById(R.id.emailFaculty);
+        passText = findViewById(R.id.passFaculty);
         btnRegister = findViewById(R.id.Register);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email, password;
-                email = String.valueOf(emailText.getText());
-                password = String.valueOf(passText.getText());
+                email = emailText.getText().toString();
+                password = passText.getText().toString();
 
                 if(TextUtils.isEmpty(email)) {
                     Toast.makeText(Faculty_registration.this, "Enter email", Toast.LENGTH_SHORT).show();
@@ -69,20 +70,7 @@ public class Faculty_registration extends AppCompatActivity {
                     return;
                 }
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(Faculty_registration.this, "Faculty Registration Successful", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Faculty_registration.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
+                regis(email, password);
 
             }
         });
@@ -105,6 +93,23 @@ public class Faculty_registration extends AppCompatActivity {
         ArrayAdapter ad1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subject);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin2.setAdapter(ad1);
+    }
+
+    private void regis(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Faculty_registration.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Faculty_registration.this, Faculty_attendance_page.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    Toast.makeText(Faculty_registration.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     public void faculty_login(View view) {
         Intent intent = new Intent(Faculty_registration.this, Faculty_attendance_page.class);
