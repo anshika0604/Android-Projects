@@ -21,12 +21,23 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class Faculty_registration extends AppCompatActivity {
 
     Button btnRegister;
-    EditText emailText, passText;
+    EditText emailText, passText, nameText;
+    Spinner courseVal, subjectVal;
     FirebaseAuth mAuth;
+
+    // Create object to DatabaseReference class to access firebase's Realtime Database
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
 
@@ -51,14 +62,20 @@ public class Faculty_registration extends AppCompatActivity {
         // Authentication
         emailText = findViewById(R.id.emailFaculty);
         passText = findViewById(R.id.passFaculty);
+        nameText = findViewById(R.id.nameFaculty);
+        courseVal = (Spinner) findViewById(R.id.course_spin);
+        subjectVal = (Spinner) findViewById(R.id.sub_spin);
         btnRegister = findViewById(R.id.Register);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
+                String email, password, name, course, subject;
                 email = emailText.getText().toString();
                 password = passText.getText().toString();
+                name = nameText.getText().toString();
+                course = courseVal.getSelectedItem().toString();
+                subject = subjectVal.getSelectedItem().toString();
 
                 if(TextUtils.isEmpty(email)) {
                     Toast.makeText(Faculty_registration.this, "Enter email", Toast.LENGTH_SHORT).show();
@@ -70,7 +87,33 @@ public class Faculty_registration extends AppCompatActivity {
                     return;
                 }
 
-                regis(email, password);
+                if(TextUtils.isEmpty(name)) {
+                    Toast.makeText(Faculty_registration.this, "Enter Name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        // Storing data to firebase Realtime Database
+                        HashMap<String, String> m =new HashMap<String, String>();
+                        m.put("name", name);
+                        m.put("email", email);
+                        m.put("password", password);
+                        m.put("course", course);
+                        m.put("subject", subject);
+                        databaseReference.child("users").push().child("Name").setValue(m);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                //regis(email, password);
+
+
 
             }
         });
@@ -95,22 +138,22 @@ public class Faculty_registration extends AppCompatActivity {
         spin2.setAdapter(ad1);
     }
 
-    private void regis(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Faculty_registration.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Faculty_registration.this, Faculty_attendance_page.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    Toast.makeText(Faculty_registration.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+//    private void regis(String email, String password) {
+//        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Faculty_registration.this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                if(task.isSuccessful()) {
+//                    Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(Faculty_registration.this, Faculty_attendance_page.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//                else {
+//                    Toast.makeText(Faculty_registration.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
     public void faculty_login(View view) {
         Intent intent = new Intent(Faculty_registration.this, Faculty_attendance_page.class);
         startActivity(intent);

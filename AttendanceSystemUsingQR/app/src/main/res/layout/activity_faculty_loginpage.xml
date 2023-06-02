@@ -96,14 +96,13 @@
         <EditText
             android:id="@+id/passFaculty"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:ems="10"
             android:hint="password"
-            android:inputType="text"
-            android:textSize="20sp" />
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/Login"

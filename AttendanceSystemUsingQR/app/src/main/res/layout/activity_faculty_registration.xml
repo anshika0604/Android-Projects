@@ -65,7 +65,7 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/nameFaculty1"
+            android:id="@+id/nameFaculty"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginLeft="40dp"
