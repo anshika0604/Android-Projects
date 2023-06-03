@@ -26,10 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Faculty_loginpage extends AppCompatActivity {
 
-    Button btnLogin;
-    EditText emailText, passText;
     FirebaseAuth mAuth;
-
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
 
 
@@ -51,9 +48,9 @@ public class Faculty_loginpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_loginpage);
 
-        emailText = findViewById(R.id.emailFaculty);
-        passText = findViewById(R.id.passFaculty);
-        btnLogin = findViewById(R.id.Login);
+        final EditText emailText = findViewById(R.id.emailFaculty);
+        final EditText passText = findViewById(R.id.passFaculty);
+        final Button btnLogin = findViewById(R.id.Login);
         mAuth = FirebaseAuth.getInstance();
 
         // ToolBar Styling and Back Button
@@ -66,34 +63,38 @@ public class Faculty_loginpage extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
+                final String email, password;
                 email = String.valueOf(emailText.getText());
                 password = String.valueOf(passText.getText());
 
-                if(TextUtils.isEmpty(email)) {
-                    Toast.makeText(Faculty_loginpage.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    return;
+                if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    if(TextUtils.isEmpty(email)) {
+                        Toast.makeText(Faculty_loginpage.this, "Enter email", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if(TextUtils.isEmpty(password)) {
+                        Toast.makeText(Faculty_loginpage.this, "Enter password", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+                else {
+                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(TextUtils.isEmpty(password)) {
-                    Toast.makeText(Faculty_loginpage.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                            if(snapshot.hasChild(email)) {
 
-                databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        if(snapshot.hasChild(email)) {
-                            
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+                        }
+                    });
+
+                }
 
 //                mAuth.signInWithEmailAndPassword(email, password)
 //                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

@@ -31,13 +31,11 @@ import java.util.HashMap;
 
 public class Faculty_registration extends AppCompatActivity {
 
-    Button btnRegister;
-    EditText emailText, passText, nameText;
-    Spinner courseVal, subjectVal;
+
     FirebaseAuth mAuth;
 
     // Create object to DatabaseReference class to access firebase's Realtime Database
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
+    //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
 
@@ -60,12 +58,12 @@ public class Faculty_registration extends AppCompatActivity {
         setContentView(R.layout.activity_faculty_registration);
 
         // Authentication
-        emailText = findViewById(R.id.emailFaculty);
-        passText = findViewById(R.id.passFaculty);
-        nameText = findViewById(R.id.nameFaculty);
-        courseVal = (Spinner) findViewById(R.id.course_spin);
-        subjectVal = (Spinner) findViewById(R.id.sub_spin);
-        btnRegister = findViewById(R.id.Register);
+        final EditText emailText = findViewById(R.id.emailFaculty);
+        final EditText passText = findViewById(R.id.passFaculty);
+        final EditText nameText = findViewById(R.id.nameFaculty);
+        final Spinner courseVal = (Spinner) findViewById(R.id.course_spin);
+        final Spinner subjectVal = (Spinner) findViewById(R.id.sub_spin);
+        final Button btnRegister = findViewById(R.id.Register);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,40 +75,58 @@ public class Faculty_registration extends AppCompatActivity {
                 course = courseVal.getSelectedItem().toString();
                 subject = subjectVal.getSelectedItem().toString();
 
-                if(TextUtils.isEmpty(email)) {
-                    Toast.makeText(Faculty_registration.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if(TextUtils.isEmpty(password)) {
-                    Toast.makeText(Faculty_registration.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if(TextUtils.isEmpty(name)) {
-                    Toast.makeText(Faculty_registration.this, "Enter Name", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        // Storing data to firebase Realtime Database
-                        HashMap<String, String> m =new HashMap<String, String>();
-                        m.put("name", name);
-                        m.put("email", email);
-                        m.put("password", password);
-                        m.put("course", course);
-                        m.put("subject", subject);
-                        databaseReference.child("users").push().child("Name").setValue(m);
+                if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name)) {
+                    if(TextUtils.isEmpty(email)) {
+                        Toast.makeText(Faculty_registration.this, "Enter email", Toast.LENGTH_SHORT).show();
+                        return;
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
+                    if(TextUtils.isEmpty(password)) {
+                        Toast.makeText(Faculty_registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                });
+
+                    if(TextUtils.isEmpty(name)) {
+                        Toast.makeText(Faculty_registration.this, "Enter Name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                else {
+//                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                             //Storing data to firebase Realtime Database
+//                            HashMap<String, String> m =new HashMap<String, String>();
+//                            m.put("name", nameText.getText().toString());
+//                            m.put("email", emailText.getText().toString());
+//                            m.put("password", passText.getText().toString());
+//                            m.put("course", courseVal.getSelectedItem().toString());
+//                            m.put("subject", subjectVal.getSelectedItem().toString());
+//                            FirebaseDatabase.getInstance().getReference().push().child("users").setValue(m);
+//                            if(snapshot.hasChild(course)) {
+//                                Toast.makeText(Faculty_registration.this, "Already Registered", Toast.LENGTH_SHORT).show();
+//                            }
+//                            else {
+//                                databaseReference.child("users").child(course).child("Name").setValue(name);
+//                                databaseReference.child("users").child(course).child("Email").setValue(email);
+//                                databaseReference.child("users").child(course).child("Password").setValue(password);
+//                                databaseReference.child("users").child(course).child("Subject").setValue(subject);
+//                                Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+//                                finish();
+//                            }
+
+                    FirebaseDatabase.getInstance().getReference().push().child("users").setValue("ram");
+
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+
+                }
                 //regis(email, password);
 
 
