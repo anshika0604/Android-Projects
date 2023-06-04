@@ -19,6 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginPage extends AppCompatActivity {
@@ -26,6 +31,7 @@ public class LoginPage extends AppCompatActivity {
     Button btnLogin;
     EditText emailText, passText;
     FirebaseAuth mAuth;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
 
     @Override
     public void onStart() {
@@ -33,8 +39,8 @@ public class LoginPage extends AppCompatActivity {
 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+        if(currentUser != null) {
+            Intent intent = new Intent(getApplicationContext(), QR_Scanner.class);
             startActivity(intent);
             finish();
         }
@@ -53,38 +59,49 @@ public class LoginPage extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
-                email = String.valueOf(emailText.getText());
-                password = String.valueOf(passText.getText());
+                final String email, password;
+                email = emailText.getText().toString();
+                password = passText.getText().toString();
 
-                if(TextUtils.isEmpty(email)) {
-                    Toast.makeText(LoginPage.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    return;
+                if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    if(TextUtils.isEmpty(email)) {
+                        Toast.makeText(LoginPage.this, "Enter email", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if(TextUtils.isEmpty(password)) {
+                        Toast.makeText(LoginPage.this, "Enter password", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+                else {
+                    databaseReference.child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(TextUtils.isEmpty(password)) {
-                    Toast.makeText(LoginPage.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(LoginPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            if(snapshot.hasChild(email)) {
+                                String getPassword = snapshot.child(email).child("password").getValue(String.class);
+                                if(getPassword.equals(password)) {
+                                    Toast.makeText(LoginPage.this, "Successfully Logged in ", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), QR_Scanner.class);
                                     startActivity(intent);
                                     finish();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(LoginPage.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+//                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(LoginPage.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        });
+                            else {
+                                Toast.makeText(LoginPage.this, "Email Does not Exist", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
+                        }
+                    });
+                }
             }
         });
 

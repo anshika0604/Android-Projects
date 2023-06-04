@@ -109,6 +109,9 @@ public class Faculty_registration extends AppCompatActivity {
                                 m.put("subject", subject);
                                 databaseReference.child("Faculty").child(email).setValue(m);
                                 Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+                                startActivity(intent);
+                                finish();
                             }
                         }
 
