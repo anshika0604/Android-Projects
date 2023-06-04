@@ -35,7 +35,8 @@ public class Faculty_registration extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     // Create object to DatabaseReference class to access firebase's Realtime Database
-    //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference("message");
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
 
@@ -92,12 +93,17 @@ public class Faculty_registration extends AppCompatActivity {
                     }
                 }
                 else {
-//                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    //Log.d("anshika","name:"+name + "course:"+course+"subject:"+subject+"email:"+email+"pass:"+password);
+                    //databaseReference.setValue("ram");
 
-                             //Storing data to firebase Realtime Database
-//                            HashMap<String, String> m =new HashMap<String, String>();
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            databaseReference.setValue("ram");
+                            Toast.makeText(Faculty_registration.this, "Suceesfull", Toast.LENGTH_SHORT).show();
+
+//                             Storing data to firebase Realtime Database
+//                           HashMap<String, String> m =new HashMap<String, String>();
 //                            m.put("name", nameText.getText().toString());
 //                            m.put("email", emailText.getText().toString());
 //                            m.put("password", passText.getText().toString());
@@ -115,16 +121,16 @@ public class Faculty_registration extends AppCompatActivity {
 //                                Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
 //                                finish();
 //                            }
-
-                    FirebaseDatabase.getInstance().getReference().push().child("users").setValue("ram");
-
-//                        }
 //
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 }
                 //regis(email, password);
