@@ -64,8 +64,8 @@ public class Faculty_loginpage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String email, password;
-                email = String.valueOf(emailText.getText());
-                password = String.valueOf(passText.getText());
+                email = emailText.getText().toString();
+                password = passText.getText().toString();
 
                 if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     if(TextUtils.isEmpty(email)) {
@@ -79,41 +79,33 @@ public class Faculty_loginpage extends AppCompatActivity {
                     }
                 }
                 else {
-                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    databaseReference.child("Faculty").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                             if(snapshot.hasChild(email)) {
-
+                                String getPassword = snapshot.child(email).child("password").getValue(String.class);
+                                if(getPassword.equals(password)) {
+                                    Toast.makeText(Faculty_loginpage.this, "Successfully Logged in ", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else {
+//                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(Faculty_loginpage.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(Faculty_loginpage.this, "Email Does not Exist", Toast.LENGTH_SHORT).show();
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });
-
                 }
-
-//                mAuth.signInWithEmailAndPassword(email, password)
-//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                if (task.isSuccessful()) {
-//                                    // Sign in success, update UI with the signed-in user's information
-//                                    Toast.makeText(Faculty_loginpage.this, "Login Successful", Toast.LENGTH_SHORT).show();
-//                                    Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
-//                                    startActivity(intent);
-//                                    finish();
-//                                } else {
-//                                    // If sign in fails, display a message to the user.
-//                                    Toast.makeText(Faculty_loginpage.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-
             }
         });
 
