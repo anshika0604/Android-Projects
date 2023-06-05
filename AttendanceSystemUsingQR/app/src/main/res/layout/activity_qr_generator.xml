@@ -56,23 +56,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:text="Course Details"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/qrCode"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            android:contentDescription="QR image"
+            android:scaleType="fitCenter" />
+
         <Button
             android:id="@+id/generate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
             android:text="Generate QR"
             android:textSize="24sp" />
-
-        <ImageView
-            android:id="@+id/qrCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="40dp"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
