@@ -133,7 +133,7 @@
 
             <Spinner
                 android:id="@+id/course_spin"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="95dp"
                 android:layout_marginTop="5dp" />
@@ -158,7 +158,7 @@
 
             <Spinner
                 android:id="@+id/sub_spin"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="90dp"
                 android:layout_marginTop="5dp" />
