@@ -101,6 +101,8 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
         // Log Out
         btnSignOut = findViewById(R.id.signOut);
+
+
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
