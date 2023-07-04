@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -54,54 +55,6 @@ public class Attendance_view_faculty extends AppCompatActivity implements DatePi
         dateButton = findViewById(R.id.date);
         dateButton.setText(getTodaysDate());
 
-        // Get Data From Intent
-
-        Intent intent = getIntent();
-        String course = intent.getStringExtra("course");
-        String subject = intent.getStringExtra("subject");
-        String section = intent.getStringExtra("section");
-        // ListView
-
-        ArrayAdapter<String> RollAdapter = new ArrayAdapter<String>(Attendance_view_faculty.this, android.R.layout.simple_list_item_1, RollArr);
-        ArrayAdapter<String> NameAdapter = new ArrayAdapter<String>(Attendance_view_faculty.this, android.R.layout.simple_list_item_1, NameArr);
-
-        roll_list = (ListView) findViewById(R.id.roll_list);
-        name_list = (ListView) findViewById(R.id.name_list);
-        roll_list.setAdapter(RollAdapter);
-        name_list.setAdapter(NameAdapter);
-
-        databaseReference.child(course).child(subject).child(section).child(date1).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String value = snapshot.getValue(String.class);
-                String key = snapshot.getKey();
-                RollArr.add(key);
-                RollAdapter.notifyDataSetChanged();
-                NameArr.add(value);
-                NameAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                RollAdapter.notifyDataSetChanged();
-                NameAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }
 
@@ -183,6 +136,64 @@ public class Attendance_view_faculty extends AppCompatActivity implements DatePi
 
     public void set_date(View view)
     {
+
         datePickerDialog.show();
+
+        // Get Data From Intent
+
+        Intent intent = getIntent();
+        String course = intent.getStringExtra("course");
+        String subject = intent.getStringExtra("subject");
+        String section = intent.getStringExtra("section");
+        // ListView
+
+        ArrayAdapter<String> RollAdapter = new ArrayAdapter<String>(Attendance_view_faculty.this, android.R.layout.simple_list_item_1, RollArr);
+        ArrayAdapter<String> NameAdapter = new ArrayAdapter<String>(Attendance_view_faculty.this, android.R.layout.simple_list_item_1, NameArr);
+        roll_list = (ListView) findViewById(R.id.roll_list);
+        name_list = (ListView) findViewById(R.id.name_list);
+
+        databaseReference.child(course).child(subject).child(section).child(date1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.exists()) {
+                    String value = snapshot.getValue(String.class);
+                    String key = snapshot.getKey();
+                    RollArr.add(key);
+                    NameArr.add(value);
+                    roll_list.setAdapter(RollAdapter);
+                    name_list.setAdapter(NameAdapter);
+                }
+                else {
+                    RollArr.clear();
+                    NameArr.clear();
+                    roll_list.setAdapter(null);
+                    name_list.setAdapter(null);
+                }
+
+                RollAdapter.notifyDataSetChanged();
+                NameAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                RollAdapter.notifyDataSetChanged();
+                NameAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
