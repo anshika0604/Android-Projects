@@ -110,11 +110,11 @@ public class QR_Scanner extends AppCompatActivity {
                 Intent intent = getIntent();
                 String roll = intent.getStringExtra("roll");
                 String name = intent.getStringExtra("name");
-                databaseReference.child(subject).addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.child(course).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        
-                        databaseReference.child(course).child(subject).child(section).child(date).setValue(roll);
+
+                        databaseReference.child(course).child(subject).child(section).child(date).child(roll).setValue(name);
                     }
 
                     @Override

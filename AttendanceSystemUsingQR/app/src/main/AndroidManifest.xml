@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
-    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -18,10 +21,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceSystemUsingQR"
         tools:targetApi="31">
+        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="android:screenOrientation"
+            android:stateNotNeeded="true"/>
+        <activity
+            android:name=".View_details"
+            android:exported="false"
+            android:parentActivityName=".Faculty_selectionpage"/>
+        <activity
+            android:name=".Attendance_view_faculty"
+            android:exported="false"
+            android:parentActivityName=".Faculty_selectionpage" />
+        <activity
+            android:name=".Faculty_selectionpage"
+            android:exported="false"
+            android:parentActivityName=".Faculty_loginpage" />
         <activity
             android:name=".Faculty_attendance_page"
             android:exported="false"
-            android:parentActivityName=".Faculty_loginpage" />
+            android:parentActivityName=".Faculty_selectionpage" />
         <activity
             android:name=".Faculty_loginpage"
             android:exported="false"
@@ -33,7 +52,7 @@
         <activity
             android:name=".QR_generator"
             android:exported="false"
-            android:parentActivityName=".Faculty_attendance_page" />
+            android:parentActivityName=".Faculty_selectionpage" />
         <activity
             android:name=".Student_registration"
             android:exported="false"

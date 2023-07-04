@@ -38,7 +38,7 @@ public class Faculty_loginpage extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+            Intent intent = new Intent(getApplicationContext(), Faculty_selectionpage.class);
             startActivity(intent);
             finish();
         }
@@ -87,7 +87,7 @@ public class Faculty_loginpage extends AppCompatActivity {
                                 String getPassword = snapshot.child(email).child("password").getValue(String.class);
                                 if(getPassword.equals(password)) {
                                     Toast.makeText(Faculty_loginpage.this, "Successfully Logged in ", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+                                    Intent intent = new Intent(getApplicationContext(), Faculty_selectionpage.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -115,7 +115,7 @@ public class Faculty_loginpage extends AppCompatActivity {
         startActivity(intent);
     }
     public void login_faculty(View view) {
-        Intent intent = new Intent(Faculty_loginpage.this, Faculty_attendance_page.class);
+        Intent intent = new Intent(Faculty_loginpage.this, Faculty_selectionpage.class);
         startActivity(intent);
     }
 }
