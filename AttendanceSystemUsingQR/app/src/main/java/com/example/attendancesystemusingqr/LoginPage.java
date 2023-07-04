@@ -81,9 +81,13 @@ public class LoginPage extends AppCompatActivity {
 
                             if(snapshot.hasChild(email)) {
                                 String getPassword = snapshot.child(email).child("password").getValue(String.class);
+                                String roll = snapshot.child(email).child("roll").getValue(String.class);
+                                String name = snapshot.child(email).child("name").getValue(String.class);
                                 if(getPassword.equals(password)) {
                                     Toast.makeText(LoginPage.this, "Successfully Logged in ", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), QR_Scanner.class);
+                                    intent.putExtra("roll",roll);
+                                    intent.putExtra("name",name);
                                     startActivity(intent);
                                     finish();
                                 }

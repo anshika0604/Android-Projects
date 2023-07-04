@@ -33,7 +33,7 @@
         <activity
             android:name=".QR_generator"
             android:exported="false"
-            android:parentActivityName=".Faculty_loginpage" />
+            android:parentActivityName=".Faculty_attendance_page" />
         <activity
             android:name=".Student_registration"
             android:exported="false"

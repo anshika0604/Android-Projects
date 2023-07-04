@@ -151,9 +151,13 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
                             // Storing data to firebase Realtime Database
 
-                            databaseReference.child(subject).child(course).child(section).child(date1).child("semester").setValue(semester);
+                            //databaseReference.child(subject).child(course).child(section).child(date1).child("semester").setValue(semester);
                             Toast.makeText(Faculty_attendance_page.this, "QR Generated Successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), QR_generator.class);
+                            intent.putExtra("course",course);
+                            intent.putExtra("subject",subject);
+                            intent.putExtra("section",section);
+                            intent.putExtra("date",date1);
                             startActivity(intent);
                             finish();
                         }

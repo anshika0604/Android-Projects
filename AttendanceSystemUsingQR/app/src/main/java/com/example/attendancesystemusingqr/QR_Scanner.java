@@ -1,6 +1,7 @@
 
 package com.example.attendancesystemusingqr;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,13 +14,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.HashMap;
 
 public class QR_Scanner extends AppCompatActivity {
 
     Button btnSignOut, btn_scanner;
     TextView scannedTV;
+    String course, subject, section, date;
+    int count = 0;
+
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +82,47 @@ public class QR_Scanner extends AppCompatActivity {
         if(intentResult != null) {
             String contents = intentResult.getContents();
             if(contents != null) {
-                scannedTV.setText(intentResult.getContents());
+                String str = "";
+                for(int i=0;i<contents.length();i++) {
+                    char s = contents.charAt(i);
+                    if(s == '/') {
+                        if(count == 0) {
+                            course = str;
+                        }
+                        else if(count == 1) {
+                            subject = str;
+                        }
+                        else if(count == 2) {
+                            section = str;
+                        }
+                        else {
+                            date = str;
+                        }
+                        str = "";
+                        count++;
+                    }
+                    else {
+                        str+= s;
+                    }
+                }
+
+                // Get roll and Name of Student
+                Intent intent = getIntent();
+                String roll = intent.getStringExtra("roll");
+                String name = intent.getStringExtra("name");
+                databaseReference.child(subject).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        
+                        databaseReference.child(course).child(subject).child(section).child(date).setValue(roll);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                scannedTV.setText("Attendance Marked Successfully");
             }
         }
         else {

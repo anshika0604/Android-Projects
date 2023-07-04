@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,7 +25,8 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 public class QR_generator extends AppCompatActivity {
 
     Button genertor_qr, btnSignOut;
-    String value;
+    TextView course,subject, section,date;
+    String value ,crs, srs, secs, dat;
 
     ImageView iv_output;
     @Override
@@ -43,10 +45,29 @@ public class QR_generator extends AppCompatActivity {
         genertor_qr = findViewById(R.id.generate);
         iv_output = findViewById(R.id.qrCode);
 
+        // Display Box
+        course = findViewById(R.id.course_data);
+        subject = findViewById(R.id.subject_data);
+        section = findViewById(R.id.section_data);
+        date = findViewById(R.id.Date_data);
+
+        Intent intent = getIntent();
+        crs = intent.getStringExtra("course");
+        srs = intent.getStringExtra("subject");
+        secs = intent.getStringExtra("section");
+        dat = intent.getStringExtra("date");
+
+        course.setText(crs);
+        subject.setText(srs);
+        section.setText(secs);
+        date.setText(dat);
+
+
         genertor_qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                value = "Attendance Marked Successfully";
+
+                value = crs+"/"+srs+"/"+secs+"/"+dat+"/";
 
                 // Initialize multi format writer
                 MultiFormatWriter writer = new MultiFormatWriter();

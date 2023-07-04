@@ -120,6 +120,8 @@ public class Student_registration extends AppCompatActivity {
                                 databaseReference.child("Student").child(email).setValue(m);
                                 Toast.makeText(Student_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), QR_Scanner.class);
+                                intent.putExtra("roll",roll);
+                                intent.putExtra("name",name);
                                 startActivity(intent);
                                 finish();
                             }
