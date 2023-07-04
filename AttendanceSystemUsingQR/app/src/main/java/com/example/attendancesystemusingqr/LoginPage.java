@@ -60,7 +60,10 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String email, password;
-                email = emailText.getText().toString();
+                String email1;
+                email1 = emailText.getText().toString();
+                email1 = email1.replace(".",",");
+                email = email1;
                 password = passText.getText().toString();
 
                 if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {

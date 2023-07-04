@@ -35,7 +35,7 @@
             android:layout_marginLeft="60dp"
             android:text="Faculty Registration"
             android:textColor="#FFFFFF"
-            android:textSize="34sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.092"

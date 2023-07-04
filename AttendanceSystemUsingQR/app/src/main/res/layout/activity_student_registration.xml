@@ -7,6 +7,7 @@
     tools:context=".Student_registration">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
         android:layout_width="0dp"
         android:layout_height="85dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +36,7 @@
             android:layout_marginLeft="60dp"
             android:text="Student Registration"
             android:textColor="#FFFFFF"
-            android:textSize="34sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -44,15 +45,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:layout_width="407dp"
-        android:layout_height="645dp"
+        android:layout_width="374dp"
+        android:layout_height="618dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+        app:layout_constraintVertical_bias="0.428">
 
         <TextView
             android:id="@+id/textView4"

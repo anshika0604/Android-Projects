@@ -73,6 +73,7 @@ public class Student_registration extends AppCompatActivity {
 
                 String email, password, name, roll, course, semester, section;
                 email = emailText.getText().toString();
+                email = email.replace(".",",");
                 password = passText.getText().toString();
                 name = nameText.getText().toString();
                 roll = rollText.getText().toString();
@@ -100,11 +101,12 @@ public class Student_registration extends AppCompatActivity {
                     }
                 }
                 else {
+                    String finalEmail = email;
                     databaseReference.child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            if(snapshot.hasChild(email)) {
+                            if(snapshot.hasChild(finalEmail)) {
                                 Toast.makeText(Student_registration.this, "Email Already Registered", Toast.LENGTH_SHORT).show();
                             }
                             else {
@@ -117,7 +119,7 @@ public class Student_registration extends AppCompatActivity {
                                 m.put("semester", semester);
                                 m.put("section",section);
                                 m.put("roll",roll);
-                                databaseReference.child("Student").child(email).setValue(m);
+                                databaseReference.child("Student").child(finalEmail).setValue(m);
                                 Toast.makeText(Student_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), QR_Scanner.class);
                                 intent.putExtra("roll",roll);

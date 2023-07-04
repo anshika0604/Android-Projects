@@ -60,15 +60,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:layout_width="411dp"
-        android:layout_height="643dp"
+        android:layout_width="359dp"
+        android:layout_height="618dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.858">
 
         <ImageView
             android:id="@+id/qrCode"
@@ -77,7 +76,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:contentDescription="QR image"
             android:scaleType="fitCenter" />
 
@@ -86,12 +85,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:text="Generate QR"
             android:textSize="24sp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="horizontal"
@@ -101,9 +100,8 @@
                 android:id="@+id/course_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_weight="1"
                 android:text="Course : "
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -112,14 +110,14 @@
                 android:id="@+id/course_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:text="Course"
                 android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
@@ -130,9 +128,8 @@
                 android:id="@+id/subject_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_weight="1"
                 android:text="Subject : "
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -141,7 +138,7 @@
                 android:id="@+id/subject_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:text="Subject"
                 android:textSize="18sp" />
@@ -149,7 +146,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
@@ -160,9 +157,8 @@
                 android:id="@+id/section_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_weight="1"
                 android:text="Section : "
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -171,7 +167,7 @@
                 android:id="@+id/section_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:text="Section"
                 android:textSize="24sp" />
@@ -179,7 +175,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
@@ -190,9 +186,7 @@
                 android:id="@+id/date_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
                 android:text="Date : "
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -201,7 +195,7 @@
                 android:id="@+id/Date_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="10dp"
                 android:text="Date"
                 android:textSize="24sp" />
 

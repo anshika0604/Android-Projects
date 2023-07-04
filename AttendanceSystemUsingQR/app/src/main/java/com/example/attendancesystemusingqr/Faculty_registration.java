@@ -70,6 +70,7 @@ public class Faculty_registration extends AppCompatActivity {
             public void onClick(View v) {
                 String email, password, name, course, subject;
                 email = emailText.getText().toString();
+                email = email.replace(".",",");
                 password = passText.getText().toString();
                 name = nameText.getText().toString();
                 course = courseVal.getSelectedItem().toString();
@@ -92,11 +93,12 @@ public class Faculty_registration extends AppCompatActivity {
                     }
                 }
                 else {
+                    String finalEmail = email;
                     databaseReference.child("Faculty").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            if(snapshot.hasChild(email)) {
+                            if(snapshot.hasChild(finalEmail)) {
                                 Toast.makeText(Faculty_registration.this, "Email Already Registered", Toast.LENGTH_SHORT).show();
                             }
                             else {
@@ -107,7 +109,7 @@ public class Faculty_registration extends AppCompatActivity {
                                 m.put("password", password);
                                 m.put("course", course);
                                 m.put("subject", subject);
-                                databaseReference.child("Faculty").child(email).setValue(m);
+                                databaseReference.child("Faculty").child(finalEmail).setValue(m);
                                 Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), Faculty_selectionpage.class);
                                 startActivity(intent);
