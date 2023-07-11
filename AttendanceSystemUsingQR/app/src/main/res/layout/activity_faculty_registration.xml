@@ -131,12 +131,34 @@
                 android:text="Course"
                 android:textSize="24sp" />
 
-            <Spinner
-                android:id="@+id/course_spin"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/course_select"
                 android:layout_width="150dp"
                 android:layout_height="48dp"
-                android:layout_marginLeft="95dp"
-                android:layout_marginTop="5dp" />
+                android:layout_marginStart="90dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp" >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/course_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:hint="Select Course"
+                        android:text="Select Course" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
 
         <LinearLayout

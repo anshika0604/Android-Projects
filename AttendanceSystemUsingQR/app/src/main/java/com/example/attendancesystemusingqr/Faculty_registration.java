@@ -1,9 +1,11 @@
 package com.example.attendancesystemusingqr;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,10 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Faculty_registration extends AppCompatActivity {
@@ -36,6 +41,10 @@ public class Faculty_registration extends AppCompatActivity {
 
     // Create object to DatabaseReference class to access firebase's Realtime Database
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
+    MaterialCardView selectCard;
+    TextView tyCourses;
+    boolean [] selectedCourses;
+    ArrayList<Integer> courseList = new ArrayList<>();
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
 
@@ -57,23 +66,36 @@ public class Faculty_registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_registration);
 
+        // Intialise for course
+        selectCard  = findViewById(R.id.course_select);
+        tyCourses = findViewById(R.id.course_text);
+        selectedCourses = new boolean[courses.length];
+
+        selectCard.setOnClickListener(v -> {
+            showCourseDialog();
+        });
+
         // Authentication
         final EditText emailText = findViewById(R.id.emailFaculty);
         final EditText passText = findViewById(R.id.passFaculty);
         final EditText nameText = findViewById(R.id.nameFaculty);
-        final Spinner courseVal = (Spinner) findViewById(R.id.course_spin);
+       // final Spinner courseVal = (Spinner) findViewById(R.id.course_spin);
         final Spinner subjectVal = (Spinner) findViewById(R.id.sub_spin);
         final Button btnRegister = findViewById(R.id.Register);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password, name, course, subject;
+                String email;
+                String password;
+                String name;
+                final String[] course = new String[1];
+                String subject;
                 email = emailText.getText().toString();
                 email = email.replace(".",",");
                 password = passText.getText().toString();
                 name = nameText.getText().toString();
-                course = courseVal.getSelectedItem().toString();
+                //course = courseVal.getSelectedItem().toString();
                 subject = subjectVal.getSelectedItem().toString();
 
                 if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name)) {
@@ -104,10 +126,19 @@ public class Faculty_registration extends AppCompatActivity {
                             else {
                                 // Storing data to firebase Realtime Database
 
+                                final StringBuilder stringBuilder = new StringBuilder();
+                                for(int i=0;i<courseList.size();i++) {
+                                    stringBuilder.append(courses[courseList.get(i)]);
+
+                                    if( i != courseList.size()-1) {
+                                        stringBuilder.append("/");
+                                    }
+                                }
+                                course[0] = stringBuilder.toString();
                                 HashMap<String, String> m =new HashMap<String, String>();
                                 m.put("name", name);
                                 m.put("password", password);
-                                m.put("course", course);
+                                m.put("courses", course[0]);
                                 m.put("subject", subject);
                                 databaseReference.child("Faculty").child(finalEmail).setValue(m);
                                 Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
@@ -139,21 +170,72 @@ public class Faculty_registration extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
 
         // Course Spinner
-        Spinner spin1 = findViewById(R.id.course_spin);
-        ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, courses);
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin1.setAdapter(ad);
+        //Spinner spin1 = findViewById(R.id.course_spin);
+        //ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, courses);
+        //ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spin1.setAdapter(ad);
 
         // Subject Spinner
         Spinner spin2 = findViewById(R.id.sub_spin);
         ArrayAdapter ad1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subject);
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin2.setAdapter(ad1);
     }
 
     public void faculty_login(View view) {
         Intent intent = new Intent(Faculty_registration.this, Faculty_selectionpage.class);
         startActivity(intent);
+    }
+
+    private void showCourseDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Faculty_registration.this);
+        builder.setTitle("Select Courses");
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(courses, selectedCourses, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                if(isChecked) {
+                    courseList.add(which);
+                }else {
+                    courseList.remove(courseList.indexOf(which));
+                }
+            }
+        }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // create String Builder
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for(int i=0;i<courseList.size();i++) {
+                    stringBuilder.append(courses[courseList.get(i)]);
+
+                    if( i != courseList.size()-1) {
+                        stringBuilder.append(", ");
+                    }
+                }
+                tyCourses.setText(stringBuilder.toString());
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                for(int i=0;i<selectedCourses.length;i++) {
+                    selectedCourses[i] = false;
+
+                    courseList.clear();
+                    tyCourses.setText("Select Course");
+                }
+            }
+        });
+        builder.show();
     }
 
 
