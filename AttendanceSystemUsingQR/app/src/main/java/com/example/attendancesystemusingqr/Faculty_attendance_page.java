@@ -1,6 +1,7 @@
 package com.example.attendancesystemusingqr;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -23,12 +24,14 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -37,16 +40,17 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
     Button btnSignOut;
     String date1 = getTodaysDate();
+    String value, value2;
     private DatePickerDialog datePickerDialog;
     private Button dateButton, timeButton;
     int hour, minute;
 
+    ArrayList<String> courses;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
-    String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
     Integer[] semester = { 1,2,3,4,5,6 };
     String[] section = { "A", "B", "C"};
-    String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
+    String[] subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,56 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
 
+        // Get current user information
+
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        databaseReference.child("Faculty").child(email).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.getKey().equals("courses")) {
+                    value = snapshot.getValue(String.class);
+                }
+                if(snapshot.getKey().equals("subjects")) {
+                    value2 = snapshot.getValue(String.class);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        courses = new ArrayList<>();
+        String str = "";
+        for(int i=0;i<value.length();i++) {
+            char ch = value.charAt(i);
+            if( ch != '/') {
+                str += ch;
+            }
+            else {
+                courses.add(str);
+                str = "";
+            }
+        }
+        courses.add(str);
         // Course Spinner
         Spinner spin1 = findViewById(R.id.course_spin);
         ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, courses);

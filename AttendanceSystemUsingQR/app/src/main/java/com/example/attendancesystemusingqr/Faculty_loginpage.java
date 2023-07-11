@@ -91,6 +91,7 @@ public class Faculty_loginpage extends AppCompatActivity {
                                 if(getPassword.equals(password)) {
                                     Toast.makeText(Faculty_loginpage.this, "Successfully Logged in ", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), Faculty_selectionpage.class);
+                                    intent.putExtra("email", email);
                                     startActivity(intent);
                                     finish();
                                 }

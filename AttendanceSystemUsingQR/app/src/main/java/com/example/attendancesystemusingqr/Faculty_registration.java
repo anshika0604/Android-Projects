@@ -41,12 +41,13 @@ public class Faculty_registration extends AppCompatActivity {
 
     // Create object to DatabaseReference class to access firebase's Realtime Database
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
-    MaterialCardView selectCard;
-    TextView tyCourses;
-    boolean [] selectedCourses;
+    MaterialCardView selectCard, selectSubjectCard;
+    TextView tyCourses, tySubjects;
+    boolean [] selectedCourses, selectedSubjects;
     ArrayList<Integer> courseList = new ArrayList<>();
+    ArrayList<Integer> subjectList = new ArrayList<>();
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
-    String[] subject = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" };
+    String[] subjects = { "C Programming ", "Operating System", "Computer Architecture", "Discrete Mathematics", "Data Structure and Algorithms", "Web Development" , "Scripting Languages", "Java Programming"};
 
     // Check if User is already Logged in
     @Override
@@ -66,7 +67,7 @@ public class Faculty_registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_registration);
 
-        // Intialise for course
+        // Initialise for course
         selectCard  = findViewById(R.id.course_select);
         tyCourses = findViewById(R.id.course_text);
         selectedCourses = new boolean[courses.length];
@@ -75,12 +76,19 @@ public class Faculty_registration extends AppCompatActivity {
             showCourseDialog();
         });
 
+        // Initialise for subject
+        selectSubjectCard  = findViewById(R.id.subject_select);
+        tySubjects = findViewById(R.id.subject_text);
+        selectedSubjects = new boolean[subjects.length];
+
+        selectSubjectCard.setOnClickListener(v -> {
+            showSubjectDialog();
+        });
+
         // Authentication
         final EditText emailText = findViewById(R.id.emailFaculty);
         final EditText passText = findViewById(R.id.passFaculty);
         final EditText nameText = findViewById(R.id.nameFaculty);
-       // final Spinner courseVal = (Spinner) findViewById(R.id.course_spin);
-        final Spinner subjectVal = (Spinner) findViewById(R.id.sub_spin);
         final Button btnRegister = findViewById(R.id.Register);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -90,13 +98,11 @@ public class Faculty_registration extends AppCompatActivity {
                 String password;
                 String name;
                 final String[] course = new String[1];
-                String subject;
+                final String[] subject = new String[1];
                 email = emailText.getText().toString();
                 email = email.replace(".",",");
                 password = passText.getText().toString();
                 name = nameText.getText().toString();
-                //course = courseVal.getSelectedItem().toString();
-                subject = subjectVal.getSelectedItem().toString();
 
                 if( TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name)) {
                     if(TextUtils.isEmpty(email)) {
@@ -135,14 +141,24 @@ public class Faculty_registration extends AppCompatActivity {
                                     }
                                 }
                                 course[0] = stringBuilder.toString();
+                                final StringBuilder stringBuilder1 = new StringBuilder();
+                                for(int i=0;i<subjectList.size();i++) {
+                                    stringBuilder1.append(subjects[subjectList.get(i)]);
+
+                                    if( i != subjectList.size()-1) {
+                                        stringBuilder1.append("/");
+                                    }
+                                }
+                                subject[0] = stringBuilder1.toString();
                                 HashMap<String, String> m =new HashMap<String, String>();
                                 m.put("name", name);
                                 m.put("password", password);
                                 m.put("courses", course[0]);
-                                m.put("subject", subject);
+                                m.put("subjects", subject[0]);
                                 databaseReference.child("Faculty").child(finalEmail).setValue(m);
                                 Toast.makeText(Faculty_registration.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), Faculty_selectionpage.class);
+                                intent.putExtra("email", finalEmail);
                                 startActivity(intent);
                                 finish();
                             }
@@ -169,17 +185,6 @@ public class Faculty_registration extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
 
-        // Course Spinner
-        //Spinner spin1 = findViewById(R.id.course_spin);
-        //ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, courses);
-        //ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spin1.setAdapter(ad);
-
-        // Subject Spinner
-        Spinner spin2 = findViewById(R.id.sub_spin);
-        ArrayAdapter ad1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subject);
-        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin2.setAdapter(ad1);
     }
 
     public void faculty_login(View view) {
@@ -238,5 +243,55 @@ public class Faculty_registration extends AppCompatActivity {
         builder.show();
     }
 
+    private void showSubjectDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Faculty_registration.this);
+        builder.setTitle("Select Subjects");
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(subjects, selectedSubjects, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                if(isChecked) {
+                    subjectList.add(which);
+                }else {
+                    subjectList.remove(subjectList.indexOf(which));
+                }
+            }
+        }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // create String Builder
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for(int i=0;i<subjectList.size();i++) {
+                    stringBuilder.append(subjects[subjectList.get(i)]);
+
+                    if( i != subjectList.size()-1) {
+                        stringBuilder.append(", ");
+                    }
+                }
+                tySubjects.setText(stringBuilder.toString());
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                for(int i=0;i<selectedSubjects.length;i++) {
+                    selectedSubjects[i] = false;
+
+                    subjectList.clear();
+                    tySubjects.setText("Select Subject");
+                }
+            }
+        });
+        builder.show();
+    }
 
 }

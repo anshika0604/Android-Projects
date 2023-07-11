@@ -43,10 +43,14 @@ public class Faculty_selectionpage extends AppCompatActivity {
         mark = findViewById(R.id.mark);
         view = findViewById(R.id.view);
 
+        Intent intent = getIntent();
+        String email =  intent.getStringExtra("email");
+
         mark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }
@@ -56,6 +60,7 @@ public class Faculty_selectionpage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), View_details.class);
+                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }
