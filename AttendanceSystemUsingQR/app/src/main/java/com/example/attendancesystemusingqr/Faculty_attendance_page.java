@@ -34,23 +34,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Faculty_attendance_page extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     Button btnSignOut;
     String date1 = getTodaysDate();
+    String email1 = "";
     String value, value2;
     private DatePickerDialog datePickerDialog;
     private Button dateButton, timeButton;
     int hour, minute;
 
-    ArrayList<String> courses;
-
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
     Integer[] semester = { 1,2,3,4,5,6 };
     String[] section = { "A", "B", "C"};
-    String[] subject;
+    String[] subject = { "1", "2", "3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
         // Create Database for date specified
 
-        final Spinner courseVal = (Spinner) findViewById(R.id.course_spin);
+        final Spinner courseVal = findViewById(R.id.course_spin);
         final Spinner subjectVal = (Spinner) findViewById(R.id.sub_spin);
         final Spinner semesterVal = (Spinner) findViewById(R.id.sem_spin);
         final Spinner sectionVal = (Spinner) findViewById(R.id.sec_spin);
@@ -83,58 +83,10 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
+        email1 = email;
 
-        databaseReference.child("Faculty").child(email).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot.getKey().equals("courses")) {
-                    value = snapshot.getValue(String.class);
-                }
-                if(snapshot.getKey().equals("subjects")) {
-                    value2 = snapshot.getValue(String.class);
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        courses = new ArrayList<>();
-        String str = "";
-        for(int i=0;i<value.length();i++) {
-            char ch = value.charAt(i);
-            if( ch != '/') {
-                str += ch;
-            }
-            else {
-                courses.add(str);
-                str = "";
-            }
-        }
-        courses.add(str);
         // Course Spinner
-        Spinner spin1 = findViewById(R.id.course_spin);
-        ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, courses);
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin1.setAdapter(ad);
-
+        showCourseSpinner();
         // Semester Spinner
         Spinner spin2 = findViewById(R.id.sem_spin);
         ArrayAdapter ad1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, semester);
@@ -335,5 +287,33 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
     public void set_date(View view)
     {
         datePickerDialog.show();
+    }
+    public void showCourseSpinner() {
+        final List<String> course2 = new ArrayList<>();
+        databaseReference.child("Faculty").child(email1).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getKey().equals("courses")) {
+                    value = snapshot.getValue(String.class);
+                    Log.d("value1", value);
+                    course2.add(value);
+                }
+                else {
+                    value = snapshot.getValue(String.class).toString();
+                    Log.d("value2", value);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Spinner spin1 = (Spinner) findViewById(R.id.course_spin);
+        ArrayAdapter<String> ad = new ArrayAdapter<String>(Faculty_attendance_page.this, android.R.layout.simple_spinner_item, course2);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin1.setAdapter(ad);
+
     }
 }
