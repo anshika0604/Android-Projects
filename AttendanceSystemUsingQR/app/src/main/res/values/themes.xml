@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.AttendanceSystemUsingQR" parent="Base.Theme.AttendanceSystemUsingQR" />
+    <style name = "DialogAninmation">
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
 </resources>

@@ -7,4 +7,6 @@
     <string name="Login">Login</string>
     <string name="Email">Enter Email Address</string>
     <string name="password">Enter Password</string>
+    <string name="open_nav">Open Navigation Bar</string>
+    <string name="close_nav">Close Navigation Bar</string>
 </resources>
