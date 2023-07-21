@@ -13,22 +13,22 @@
             android:title="Home"/>
 
         <item
-            android:id="@+id/mark"
+            android:id="@+id/nav_mark"
             android:icon="@drawable/baseline_note_add_24"
             android:title="Mark Attendance"/>
 
         <item
-            android:id="@+id/add"
+            android:id="@+id/nav_add"
             android:icon="@drawable/baseline_add_circle_24"
             android:title="Add Course/ Subject"/>
 
         <item
-            android:id="@+id/view"
+            android:id="@+id/nav_view_attendance"
             android:icon="@drawable/baseline_pageview_24"
             android:title="View Attendance"/>
 
         <item
-            android:id="@+id/profile"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/baseline_person_24"
             android:title="Profile"/>
     </group>
