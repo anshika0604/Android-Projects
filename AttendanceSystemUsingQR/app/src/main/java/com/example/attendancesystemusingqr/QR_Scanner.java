@@ -26,9 +26,9 @@ import java.util.HashMap;
 
 public class QR_Scanner extends AppCompatActivity {
 
-    Button btnSignOut, btn_scanner;
+    Button btnSignOut, btn_scanner, profilePage;
     TextView scannedTV;
-    String course, subject, section, date;
+    String course, subject, section, date, email;
     int count = 0;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
@@ -60,6 +60,21 @@ public class QR_Scanner extends AppCompatActivity {
         // QR Code Scanner
         btn_scanner = findViewById(R.id.scanner_btn);
         scannedTV = findViewById(R.id.scan_details);
+
+        // Profile page open
+        profilePage = findViewById(R.id.profileclick);
+        profilePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                email = intent.getStringExtra("email");
+                Intent intent1 = new Intent(getApplicationContext(), Profile.class);
+                intent1.putExtra("email", email);
+                startActivity(intent1);
+                finish();
+            }
+        });
+
 
         btn_scanner.setOnClickListener(new View.OnClickListener() {
             @Override

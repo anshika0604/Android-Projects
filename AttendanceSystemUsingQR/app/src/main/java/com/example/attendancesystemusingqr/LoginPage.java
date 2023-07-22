@@ -91,6 +91,7 @@ public class LoginPage extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), QR_Scanner.class);
                                     intent.putExtra("roll",roll);
                                     intent.putExtra("name",name);
+                                    intent.putExtra("email", email);
                                     startActivity(intent);
                                     finish();
                                 }
