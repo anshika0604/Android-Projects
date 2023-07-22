@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +20,7 @@ public class Profile extends AppCompatActivity {
     TextView profileName, profileEmail, profileRoll, profilePassword;
     TextView profileCourse, profileSection, titleName, titleEmail;
     String name, email, course, section, roll, password;
+    Button editButton;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
 
     @Override
@@ -33,7 +36,14 @@ public class Profile extends AppCompatActivity {
         profileSection = findViewById(R.id.profileSection);
         titleName = findViewById(R.id.titleName);
         titleEmail = findViewById(R.id.titleEmail);
+        editButton = findViewById(R.id.editButton);
         showUserData();
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passUserData();
+            }
+        });
     }
 
     public void showUserData() {
@@ -44,24 +54,19 @@ public class Profile extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot i : snapshot.getChildren()) {
                     String key = i.getKey().toString();
-                    Log.d("hello key - ", key);
                     if (key.equals("name")) {
                         name = i.getValue(String.class);
-                        Log.d("hello name - ", name);
                     } else if (key.equals("course")) {
                         course = i.getValue(String.class);
-                        Log.d("hello course - ", course);
                     } else if (key.equals("roll")) {
                         roll = i.getValue(String.class);
-                        Log.d("hello roll - ", roll);
                     } else if (key.equals("password")) {
                         password = i.getValue(String.class);
-                        Log.d("hello pass - ", password);
                     } else if (key.equals("section")) {
                         section = i.getValue(String.class);
-                        Log.d("hello section - ", section);
                     }
                 }
+                email = email.replace(",",".");
                 titleName.setText(name);
                 titleEmail.setText(email);
                 profileName.setText(name);
@@ -77,6 +82,42 @@ public class Profile extends AppCompatActivity {
 
             }
         });
-        Log.d("values", name+course+email+section+roll+section);
+    }
+    public void passUserData() {
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
+        databaseReference.child("Student").child(email).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot i : snapshot.getChildren()) {
+                    String key = i.getKey().toString();
+                    if (key.equals("name")) {
+                        name = i.getValue(String.class);
+                    } else if (key.equals("course")) {
+                        course = i.getValue(String.class);
+                    } else if (key.equals("roll")) {
+                        roll = i.getValue(String.class);
+                    } else if (key.equals("password")) {
+                        password = i.getValue(String.class);
+                    } else if (key.equals("section")) {
+                        section = i.getValue(String.class);
+                    }
+                }
+                Intent intent1 = new Intent(Profile.this, EditProfile_Student.class);
+                intent1.putExtra("name", name);
+                intent1.putExtra("course", course);
+                intent1.putExtra("roll", roll);
+                intent1.putExtra("email", email);
+                intent1.putExtra("section", section);
+                intent1.putExtra("password", password);
+                startActivity(intent1);
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
