@@ -61,18 +61,38 @@ public class EditProfile_Faculty extends AppCompatActivity {
         editSubject.setOnClickListener(v -> {
             showSubjectDialog();
         });
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
 
         saveButton.setOnClickListener(view -> {
-            if (isNameChanged() || isPasswordChanged() || isCourseChanged() || isSubjectChanged()){
+            boolean flag = false;
+            if (isNameChanged() ){
+                flag = true;
+            }
+            if(isPasswordChanged() ) {
+                flag = true;
+            }
+            if(isCourseChanged() ) {
+                flag = true;
+            }
+            if(isSubjectChanged()) {
+                flag = true;
+            }
+            if( flag  == true) {
                 Toast.makeText(EditProfile_Faculty.this, "Saved", Toast.LENGTH_SHORT).show();
-
+                Intent intent1 = new Intent(getApplicationContext(), Profile_Faculty.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent1.putExtra("email", email);
+                startActivity(intent1);
+                finish();
             } else {
                 Toast.makeText(EditProfile_Faculty.this, "No Changes Found", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(getApplicationContext(), Profile_Faculty.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent1.putExtra("email", email);
+                startActivity(intent1);
+                finish();
             }
-            Intent intent = new Intent(EditProfile_Faculty.this, Profile_Faculty.class);
-            intent.putExtra("email", email);
-            startActivity(intent);
-            finish();
         });
     }
     private boolean isNameChanged() {
@@ -103,7 +123,6 @@ public class EditProfile_Faculty extends AppCompatActivity {
     private boolean isCourseChanged() {
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
-        email = email.replace(".", ",");
 
         final StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i<courseList.size();i++) {
@@ -128,7 +147,6 @@ public class EditProfile_Faculty extends AppCompatActivity {
     private boolean isSubjectChanged() {
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
-        email = email.replace(".", ",");
         final StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i<subjectList.size();i++) {
             stringBuilder.append(subjects[subjectList.get(i)]);
@@ -165,7 +183,6 @@ public class EditProfile_Faculty extends AppCompatActivity {
                     if(courses[j].equals(str)) {
                         selectedCourses[j] = true;
                         courseList.add(j);
-                        break;
                     }
                 }
                 str = "";
@@ -175,7 +192,6 @@ public class EditProfile_Faculty extends AppCompatActivity {
             if(courses[j].equals(str)) {
                 selectedCourses[j] = true;
                 courseList.add(j);
-                break;
             }
         }
         builder.setMultiChoiceItems(courses, selectedCourses, new DialogInterface.OnMultiChoiceClickListener() {
