@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -33,6 +34,7 @@ public class Attendance_view_faculty extends AppCompatActivity implements DatePi
 
     ListView roll_list, name_list;
     ArrayList<String> RollArr = new ArrayList<>();
+    ImageView back;
     ArrayList<String> NameArr = new ArrayList<>();
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
@@ -46,9 +48,20 @@ public class Attendance_view_faculty extends AppCompatActivity implements DatePi
         // Toolbar Styling and Back Button
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
+
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         // Date Selector
         initDatePicker();

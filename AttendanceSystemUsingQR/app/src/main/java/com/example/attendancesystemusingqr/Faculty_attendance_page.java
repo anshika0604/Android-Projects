@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -18,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -39,13 +44,15 @@ import java.util.Locale;
 
 public class Faculty_attendance_page extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    Button btnSignOut;
     String date1 = getTodaysDate();
     String email1 = "";
     String value, value2;
     private DatePickerDialog datePickerDialog;
     private Button dateButton, timeButton;
     int hour, minute;
+    DrawerLayout drawerLayout;
+    ImageView menu;
+    LinearLayout home, mark1, view1, profile, logout;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
     ArrayList<String> course2 = new ArrayList<>();
@@ -68,6 +75,57 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
         final Spinner sectionVal = (Spinner) findViewById(R.id.sec_spin);
         final Button generateQR = findViewById(R.id.Register);
 
+
+        // Navigation Drawer
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        menu = findViewById(R.id.menu);
+        home = findViewById(R.id.nav_home);
+        mark1 = findViewById(R.id.nav_mark);
+        view1 = findViewById(R.id.nav_view);
+        profile = findViewById(R.id.nav_profile);
+        logout = findViewById(R.id.nav_logout);
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer(drawerLayout);
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(Faculty_attendance_page.this, Faculty_selectionpage.class, email);
+            }
+        });
+        mark1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recreate();
+            }
+        });
+        view1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(Faculty_attendance_page.this, View_details.class, email);
+            }
+        });
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(Faculty_attendance_page.this, Profile_Faculty.class, email);
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                redirectActivity(Faculty_attendance_page.this, Faculty_loginpage.class, email);
+            }
+        });
+
         // Date Selector
         initDatePicker();
         dateButton = findViewById(R.id.setDate);
@@ -75,17 +133,9 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
         // Time Selector
         timeButton = findViewById(R.id.setTime);
-        // Toolbar Styling and Back Button
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
 
         // Get current user information
 
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
         email1 = email;
 
         // Course Spinner
@@ -112,20 +162,6 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
         ad3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subject);
         ad3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin4.setAdapter(ad3);
-
-        // Log Out
-        btnSignOut = findViewById(R.id.signOut);
-
-
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Faculty_loginpage.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         // Generate QR
         generateQR.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +207,7 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
                             intent.putExtra("course",course);
                             intent.putExtra("subject",subject);
                             intent.putExtra("section",section);
+                            intent.putExtra("email", email);
                             intent.putExtra("date",date1);
                             startActivity(intent);
                             finish();
@@ -358,6 +395,26 @@ public class Faculty_attendance_page extends AppCompatActivity implements DatePi
 
             }
         });
+    }
+    public static void openDrawer(DrawerLayout drawerLayout) {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public static void closeDrawer(DrawerLayout drawerLayout) {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+    public static void redirectActivity(Activity activity, Class secondActivity, String email) {
+        Intent intent = new Intent(activity, secondActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("email", email);
+        activity.startActivity(intent);
+        activity.finish();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(drawerLayout);
     }
 }

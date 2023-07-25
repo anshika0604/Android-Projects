@@ -3,13 +3,18 @@ package com.example.attendancesystemusingqr;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,7 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class View_details extends AppCompatActivity {
 
-    Button btnSignOut;
+    DrawerLayout drawerLayout;
+    ImageView menu;
+    LinearLayout home, mark1, view1, profile, logout;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://qr-based-attendance-7053b-default-rtdb.firebaseio.com/");
     String[] courses = { "BCA", "MCA", "BSc IT", "BSc CS", "MSc IT", "BTech" };
@@ -33,12 +40,56 @@ public class View_details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_details);
 
-        // Toolbar Styling and Back Button
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        // Navigation Drawer
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        menu = findViewById(R.id.menu);
+        home = findViewById(R.id.nav_home);
+        mark1 = findViewById(R.id.nav_mark);
+        view1 = findViewById(R.id.nav_view);
+        profile = findViewById(R.id.nav_profile);
+        logout = findViewById(R.id.nav_logout);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer(drawerLayout);
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(View_details.this, Faculty_selectionpage.class, email);
+            }
+        });
+        mark1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(View_details.this, Faculty_attendance_page.class, email);
+            }
+        });
+        view1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recreate();
+            }
+        });
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(View_details.this, Profile_Faculty.class, email);
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                redirectActivity(View_details.this, Faculty_loginpage.class, email);
+            }
+        });
 
         // Details Functionalities
 
@@ -66,19 +117,7 @@ public class View_details extends AppCompatActivity {
         ad3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin4.setAdapter(ad3);
 
-        // Log Out
-        btnSignOut = findViewById(R.id.signOut);
 
-
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Faculty_loginpage.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         viewRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +155,7 @@ public class View_details extends AppCompatActivity {
                             intent.putExtra("course",course);
                             intent.putExtra("subject",subject);
                             intent.putExtra("section",section);
+                            intent.putExtra("email", email);
                             startActivity(intent);
                             finish();
                         }
@@ -129,5 +169,26 @@ public class View_details extends AppCompatActivity {
                 }
             }
         });
+    }
+    public static void openDrawer(DrawerLayout drawerLayout) {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public static void closeDrawer(DrawerLayout drawerLayout) {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+    public static void redirectActivity(Activity activity, Class secondActivity, String email) {
+        Intent intent = new Intent(activity, secondActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("email", email);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(drawerLayout);
     }
 }

@@ -27,6 +27,7 @@ public class QR_generator extends AppCompatActivity {
     Button genertor_qr, btnSignOut;
     TextView course,subject, section,date;
     String value ,crs, srs, secs, dat;
+    ImageView back;
 
     ImageView iv_output;
     @Override
@@ -38,8 +39,7 @@ public class QR_generator extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
+
 
         // QR Generator
         genertor_qr = findViewById(R.id.generate);
@@ -56,6 +56,18 @@ public class QR_generator extends AppCompatActivity {
         srs = intent.getStringExtra("subject");
         secs = intent.getStringExtra("section");
         dat = intent.getStringExtra("date");
+        String email = intent.getStringExtra("email");
+
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Faculty_attendance_page.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         course.setText(crs);
         subject.setText(srs);

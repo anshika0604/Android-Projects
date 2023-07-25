@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Faculty_selectionpage extends AppCompatActivity {
 
-    Button view, mark, btnSignOut, profileView;
+    Button view, mark, profileView;
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout home, mark1, view1, profile, logout;
@@ -33,13 +33,6 @@ public class Faculty_selectionpage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_selectionpage);
-
-        // Toolbar Styling and Back Button
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_button_foreground);
 
         // Get Email
         Intent intent = getIntent();
