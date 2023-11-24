@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "390439407187",
+    "project_id": "diagnostic-f3ced",
+    "storage_bucket": "diagnostic-f3ced.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390439407187:android:42f0346169fbbf0b5e80a6",
+        "android_client_info": {
+          "package_name": "com.example.diagnostic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjbB-qSEYbhyISS-R2u1cxkc4s-wJOITE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

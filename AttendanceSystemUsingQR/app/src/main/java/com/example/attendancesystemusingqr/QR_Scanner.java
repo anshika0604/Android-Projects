@@ -26,7 +26,8 @@ import java.util.HashMap;
 
 public class QR_Scanner extends AppCompatActivity {
 
-    Button btnSignOut, btn_scanner, profilePage;
+    Button btnSignOut, btn_scanner;
+    //Button profilePage;
     TextView scannedTV;
     String course, subject, section, date, email;
     int count = 0;
@@ -62,18 +63,18 @@ public class QR_Scanner extends AppCompatActivity {
         scannedTV = findViewById(R.id.scan_details);
 
         // Profile page open
-        profilePage = findViewById(R.id.profileclick);
-        profilePage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = getIntent();
-                email = intent.getStringExtra("email");
-                Intent intent1 = new Intent(getApplicationContext(), Profile.class);
-                intent1.putExtra("email", email);
-                startActivity(intent1);
-                finish();
-            }
-        });
+        //profilePage = findViewById(R.id.profileclick);
+//        profilePage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = getIntent();
+//                email = intent.getStringExtra("email");
+//                Intent intent1 = new Intent(getApplicationContext(), Profile.class);
+//                intent1.putExtra("email", email);
+//                startActivity(intent1);
+//                finish();
+//            }
+//        });
 
 
         btn_scanner.setOnClickListener(new View.OnClickListener() {

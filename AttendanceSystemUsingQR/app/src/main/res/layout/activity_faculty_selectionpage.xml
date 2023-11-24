@@ -35,14 +35,6 @@
                 android:text="View Attendance"
                 android:textSize="34sp" />
 
-            <Button
-                android:id="@+id/profileview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="100dp"
-                android:gravity="center"
-                android:text="Profile"
-                android:textSize="24sp" />
             
         </LinearLayout>
     

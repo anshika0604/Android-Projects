@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#69f542</color>
+    <color name="red">#e01021</color>
+    <color name = "blue">#2916cc</color>
+    <color name="color_status_bar_gradient">#4f4e4c</color>
+</resources>

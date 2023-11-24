@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PermissionPage">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        android:layout_height="80dp"
+        android:background="@drawable/gradient" >
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diagnostics"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:layout_gravity="center" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="We'll perform some diagonstics to assess your phone's condition.\n\nFor this ensure that all permissions are granted."
+        android:textSize="20dp"
+        android:layout_weight="1"
+        android:textAlignment="textStart"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        tools:ignore="RtlCompat" />
+
+    <Button
+        android:layout_width="180dp"
+        android:textStyle="bold"
+        android:layout_height="60dp"
+        android:text="CONTINUE"
+        android:id="@+id/checkButton"
+        android:textSize="20dp"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        android:background="@drawable/button_outline"
+        android:layout_marginBottom="40dp"
+        android:layout_gravity="center"/>
+
+
+
+</LinearLayout>

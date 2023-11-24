@@ -7,12 +7,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -30,9 +33,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button cameraButton;
+    AppCompatButton cameraButton;
 
-    private final static int REQUEST_IMAGE_CAMPTURE = 124;
+    private final static int REQUEST_IMAGE_CAPTURE = 124;
     FirebaseVisionImage image;
     FirebaseVisionFaceDetector detector;
 
@@ -50,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if(intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent, REQUEST_IMAGE_CAMPTURE);
+                    //startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                    Log.d("hello 1", intent.toString());
+                    someActivityResultLauncher.launch(intent);
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -58,28 +63,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE_CAMPTURE && resultCode == RESULT_OK) {
-            Bundle extra = data.getExtras();
-            Bitmap bitmap = (Bitmap)extra.get("data");
-            detectFace(bitmap);
-        }
-    }
-    private void detectFace(Bitmap bitmap) {
-        FirebaseVisionFaceDetectorOptions options = new FirebaseVisionFaceDetectorOptions.
-                Builder().setModeType(FirebaseVisionFaceDetectorOptions.ACCURATE_MODE)
-                .setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
-                .setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS).build();
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        Bundle extra = data.getExtras();
+                        Bitmap bitmap = (Bitmap)extra.get("data");
+                        Log.d("hello 2", data.toString());
+                        detectFace(bitmap);
 
-        try {
+                    }
+                }
+            });
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            Bundle extra = data.getExtras();
+//            Bitmap bitmap = (Bitmap)extra.get("data");
+//            detectFace(bitmap);
+//        }
+//    }
+    private void detectFace(Bitmap bitmap) {
+        Log.d("hello 3", bitmap.toString());
+        FirebaseVisionFaceDetectorOptions options = new FirebaseVisionFaceDetectorOptions.Builder().setModeType(FirebaseVisionFaceDetectorOptions.ACCURATE_MODE).setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS).setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS).build();
+
+
             image = FirebaseVisionImage.fromBitmap(bitmap);
             detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+            Log.d("hello 4", image.toString());
+            Log.d("hello 5", detector.toString());
+
+
 
         detector.detectInImage(image)
                 .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
@@ -88,10 +106,7 @@ public class MainActivity extends AppCompatActivity {
                         String resultText = "";
                         int i = 1;
                         for(FirebaseVisionFace face: firebaseVisionFaces) {
-                            resultText = resultText.concat("\nFACE NUMBER - " + i + ": ")
-                                    .concat("\nSmile: " + face.getSmilingProbability()*100 + "%")
-                                    .concat("\nLeft Eye Open: "+face.getLeftEyeOpenProbability()*100 + "%")
-                                    .concat("\nRight Eye Open: " + face.getRightEyeOpenProbability()*100 + "%");
+                            resultText = resultText.concat("\nFACE NUMBER - " + i + ": ").concat("\nSmile: " + face.getSmilingProbability()*100 + "%").concat("\nLeft Eye Open: "+face.getLeftEyeOpenProbability()*100 + "%").concat("\nRight Eye Open: " + face.getRightEyeOpenProbability()*100 + "%");
                             i++;
                         }
                         if(firebaseVisionFaces.size() == 0) {
@@ -100,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Bundle bundle = new Bundle();
                             bundle.putString(LCOFaceDetection.RESULT_TEXT, resultText);
-                            DialogFragment resultdialog = new Result_dialog();
+                            DialogFragment resultdialog = new ResultDialog();
                             resultdialog.setArguments(bundle);
                             resultdialog.setCancelable(true);
                             resultdialog.show(getSupportFragmentManager(), LCOFaceDetection.RESULT_DIALOG);
@@ -109,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Oops, Somthing Went Wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Oops, Something Went Wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

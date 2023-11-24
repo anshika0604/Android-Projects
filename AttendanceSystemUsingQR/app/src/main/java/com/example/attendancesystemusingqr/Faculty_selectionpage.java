@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Faculty_selectionpage extends AppCompatActivity {
 
-    Button view, mark, profileView;
+    Button view, mark;
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout home, mark1, view1, profile, logout;
@@ -92,7 +92,6 @@ public class Faculty_selectionpage extends AppCompatActivity {
 
         mark = findViewById(R.id.mark);
         view = findViewById(R.id.view);
-        profileView = findViewById(R.id.profileview);
 
         mark.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,15 +109,6 @@ public class Faculty_selectionpage extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), View_details.class);
                 intent.putExtra("email",email);
                 startActivity(intent);
-                finish();
-            }
-        });
-        profileView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(getApplicationContext(), Profile_Faculty.class);
-                intent1.putExtra("email",email);
-                startActivity(intent1);
                 finish();
             }
         });
